@@ -1,0 +1,46 @@
+---
+- name: Deploy and Update Nginx Container with Ansible
+  hosts: all
+  become: false
+  tasks:
+    # ========================================================
+    # Create Network
+    # ========================================================
+    - name: Create a bridge network
+      community.docker.docker_network:
+        name: spnet
+        state: present
+
+    # ========================================================
+    # Deploy New Containers
+    # ========================================================
+    - name: Deploy the updated db container
+      community.docker.docker_container:
+        name: db
+        image: ghcr.io/liviaisaiah-collab/smallproj1-db:latest
+        env:
+          MYSQL_ROOT_PASSWORD: mysqlrootpassword21
+          MYSQL_DATABASE: spdb
+        expose:
+          - "3306"
+        volumes:
+          - db_data:/var/lib/mysql
+        networks:
+          - name: spnet
+        state: started
+        recreate: true
+        pull: true
+        restart_policy: always
+
+    - name: Deploy the updated webserver container
+      community.docker.docker_container:
+        name: web
+        image: ghcr.io/liviaisaiah-collab/smallproj1-webserver:latest
+        ports:
+          - "80:80"
+        networks:
+          - name: spnet
+        state: started
+        recreate: true
+        pull: true
+        restart_policy: always

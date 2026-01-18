@@ -5,3 +5,4 @@ INSERT INTO example () VALUES ();
 INSERT INTO example () VALUES ();
 INSERT INTO example () VALUES ();
 INSERT INTO example () VALUES ();
+INSERT INTO example () VALUES ();
