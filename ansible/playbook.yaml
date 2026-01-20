@@ -1,5 +1,5 @@
 ---
-- name: Deploy and Update Nginx Container with Ansible
+- name: Deploy Docker Containers with Ansible
   hosts: all
   become: false
   tasks:
