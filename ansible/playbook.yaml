@@ -12,6 +12,21 @@
         state: present
 
     # ========================================================
+    # Clean Existing Database (if requested)
+    # ========================================================
+    - name: Stop db container if requested
+      community.docker.docker_container:
+        name: db
+        state: absent
+      when: reset_db | default(false) | bool
+
+    - name: Remove db volume if requested
+      community.docker.docker_volume:
+        name: db_data
+        state: absent
+      when: reset_db | default(false) | bool
+
+    # ========================================================
     # Deploy New Containers
     # ========================================================
     - name: Deploy the updated db container
@@ -38,7 +53,7 @@
         image: ghcr.io/liviaisaiah-collab/smallproj1-webserver:latest
         env:
           DB_HOST: db
-          DB_PORT: 3306
+          DB_PORT: "3306"
           DB_DATABASE: spdb
           DB_USERNAME: root
           DB_PASSWORD: mysqlrootpassword21

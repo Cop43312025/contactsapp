@@ -1,0 +1,35 @@
+name: Run Ansible Playbook
+
+on:
+  workflow_run:
+    workflows: ["Build and publish Docker images"]
+    types:
+      - completed
+
+jobs:
+  run-ansible:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H contacts.0sake.net >> ~/.ssh/known_hosts
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i ansible/inventory.ini -e reset_db=true ansible/playbook.yaml
