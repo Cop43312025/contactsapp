@@ -4,6 +4,14 @@
   become: false
   tasks:
     # ========================================================
+    # Install Setuptools
+    # ========================================================
+    - name: Install Python Setuptools
+      ansible.builtin.apt:
+        name: python3-setuptools
+        state: present
+
+    # ========================================================
     # Install Docker SDK
     # ========================================================
     - name: Install Docker SDK
