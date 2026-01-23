@@ -1,6 +1,7 @@
 name: Run Ansible Playbook
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Build and publish Docker images"]
     types:
