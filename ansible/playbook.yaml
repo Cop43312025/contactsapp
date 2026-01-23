@@ -4,6 +4,15 @@
   become: false
   tasks:
     # ========================================================
+    # Install Docker SDK
+    # ========================================================
+    - name: Install Docker SDK
+      ansible.builtin.pip:
+        name: docker
+        state: present
+        break_system_packages: true
+
+    # ========================================================
     # Create Network
     # ========================================================
     - name: Create a bridge network
