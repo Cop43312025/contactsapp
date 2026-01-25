@@ -15,66 +15,70 @@ if (!$db) {
     returnWithError("Database connection failed");
 }
 
+$input = json_decode(file_get_contents('php://input'), true);
+$db = dbConnect();
+if (!$db) returnWithError("Database connection failed");
 
-// TEMP for testing
-$ownerId = $input["owner_id"] ?? null;
-$contactId = $input["contact_id"] ?? null;
+switch ($input["action"] ?? null) {
+    case "create":
+        createContact($db, $input);
+        break;
+    case "edit":
+        editContact($db, $input);
+        break;
+    case "delete":
+        deleteContact($db, $input);
+        break;
+    case "get":
+        getContacts($db, $input);
+        break;
+    default:
+        returnWithError("Invalid action");
+}
 
-$method=$_SERVER['REQUEST_METHOD'];
+$db->close();
 
-if ($method == 'POST') {
-    delete_contact($db, $ownerId, $contactId);
-} elseif ($method == 'PUT') {
-    $first_name = $input["first_name"] ?? null;
-    $last_name = $input["last_name"] ?? null;
+function deleteContact($db, $input) {
+    $contactId = $input["contact_id"] ?? null;
+    $ownerId = $input["owner_id"] ?? null;
+
+    if (!$contactId || !$ownerId) returnWithError("Missing required fields");
+
+    $stmt = $db->prepare("DELETE FROM contacts WHERE id=? AND owner_id=?");
+    $stmt->bind_param("ii", $contactId, $ownerId);
+    if ($stmt->execute() && $stmt->affected_rows > 0) returnWithSuccess(["contact_id" => $contactId]);
+    else returnWithError("Failed to delete contact or not found");
+}
+
+
+
+function editContact($db, $input) {
+    $contactId = $input["contact_id"] ?? null;
+    $ownerId = $input["owner_id"] ?? null;
+    $firstName = $input["first_name"] ?? null;
+    $lastName = $input["last_name"] ?? null;
     $email = $input["email"] ?? null;
     $phone = $input["phone"] ?? null;
-    edit_contact($db, $ownerId, $contactId, $first_name, $last_name, $email, $phone);
-} else {
-    returnWithError("Invalid request method");
-}
 
-function delete_contact($db, $ownerId, $contactId) {
-    $stmt = $db->prepare("DELETE FROM contacts WHERE id = ? AND owner_id = ?");
-    $stmt->bind_param("ii", $contactId, $ownerId);
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            returnSuccess("Contact deleted successfully");
-        } else {
-            returnWithError("No Records Found");
-        }
-    } else {
-        returnWithError("Failed to delete contact");
-    }
-    $stmt->close();
-}
+    if (!$contactId || !$ownerId) returnWithError("Missing required fields");
 
-function returnSuccess($message) {
-    echo json_encode([
-        "success" => true,
-        "message" => $message,
-        "error" => ""
-    ]);
-    exit;
+    $stmt = $db->prepare("UPDATE contacts SET first_name=?, last_name=?, email=?, phone=? WHERE id=? AND owner_id=?");
+    $stmt->bind_param("ssssii", $firstName, $lastName, $email, $phone, $contactId, $ownerId);
+    if ($stmt->execute()) returnWithSuccess(["contact_id" => $contactId]);
+    else returnWithError("Failed to update contact");
 }
 
 
-function edit_contact($db, $ownerId, $contactId, $first_name, $last_name,$email, $phone) {
-    $stmt = $db->prepare("
-        UPDATE contacts
-        SET first_name = ?, last_name = ?, email = ?, phone = ?
-        WHERE id = ? AND owner_id = ?
-    ");
-    $stmt->bind_param("ssssii", $first_name, $last_name,$email, $phone, $contactId, $ownerId);
-    
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            returnSuccess("Contact updated successfully");
-        } else {
-            returnWithError("No Records Found");
-        }
-    } else {
-        returnWithError("Failed to update contact");
-    }
-    $stmt->close();
+// ---- Response Helpers ----
+function sendResultInfoAsJson($obj) {
+    header('Content-type: application/json');
+    echo $obj;
+}
+
+function returnWithSuccess($data) {
+    sendResultInfoAsJson(json_encode(["success" => true, "data" => $data, "error" => ""]));
+}
+
+function returnWithError($err) {
+    sendResultInfoAsJson(json_encode(["success" => false, "data" => null, "error" => $err]));
 }
