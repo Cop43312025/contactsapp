@@ -1,3 +1,4 @@
 .ansible/
 .vscode/
 branch_description.txt
+difflog.txt
