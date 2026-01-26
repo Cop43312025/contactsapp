@@ -49,7 +49,7 @@
     - name: Deploy the updated db container
       community.docker.docker_container:
         name: db
-        image: ghcr.io/liviaisaiah-collab/smallproj1-db:latest
+        image: ghcr.io/cop43312025/contactsapp-db:latest
         env:
           MYSQL_ROOT_PASSWORD: mysqlrootpassword21
           MYSQL_DATABASE: spdb
@@ -67,7 +67,7 @@
     - name: Deploy the updated webserver container
       community.docker.docker_container:
         name: web
-        image: ghcr.io/liviaisaiah-collab/smallproj1-webserver:latest
+        image: ghcr.io/cop43312025/contactsapp-webserver:latest
         env:
           DB_HOST: db
           DB_PORT: "3306"
