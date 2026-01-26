@@ -15,10 +15,7 @@ if (!$db) {
     returnWithError("Database connection failed");
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
-$db = dbConnect();
-if (!$db) returnWithError("Database connection failed");
-
+# action menu 
 switch ($input["action"] ?? null) {
     case "create":
         createContact($db, $input);
@@ -38,6 +35,8 @@ switch ($input["action"] ?? null) {
 
 $db->close();
 
+
+#delete contact
 function deleteContact($db, $input) {
     $contactId = $input["contact_id"] ?? null;
     $ownerId = $input["owner_id"] ?? null;
@@ -51,7 +50,7 @@ function deleteContact($db, $input) {
 }
 
 
-
+#edit contacts
 function editContact($db, $input) {
     $contactId = $input["contact_id"] ?? null;
     $ownerId = $input["owner_id"] ?? null;
@@ -69,7 +68,7 @@ function editContact($db, $input) {
 }
 
 
-// ---- Response Helpers ----
+// helpers
 function sendResultInfoAsJson($obj) {
     header('Content-type: application/json');
     echo $obj;
