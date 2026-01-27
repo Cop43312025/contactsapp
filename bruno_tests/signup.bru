@@ -4,13 +4,15 @@ meta {
   seq: 1
 }
 
-get {
-  url: http://localhost:8080/users/signup?username=bob&password=passbob
-  body: none
+post {
+  url: http://localhost:8080/users/signup
+  body: json
   auth: none
 }
 
-query {
-  username: bob
-  password: passbob
+body:json {
+  {
+    "username":"alice",
+    "password":"password"
+  }
 }
