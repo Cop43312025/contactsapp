@@ -14,10 +14,12 @@ function success_response($status_code, $data){
 
 function execute_stmt_and_respond($stmt) {
 
-    if (!$stmt->execute()) {
-        error_response(500, $stmt->error);
+    try {
+        $stmt->execute();
+    }catch( mysqli_sql_exception $e){
+        error_response(500, $e->getMessage());
         $stmt->close();
-        return;
+        return;   
     }
 
     $result = $stmt->get_result();
