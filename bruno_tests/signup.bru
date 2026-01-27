@@ -1,0 +1,16 @@
+meta {
+  name: signup
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/users/signup?username=bob&password=passbob
+  body: none
+  auth: none
+}
+
+query {
+  username: bob
+  password: passbob
+}

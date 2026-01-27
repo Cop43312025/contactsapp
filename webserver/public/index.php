@@ -1,30 +1,25 @@
 <?php
 
-session_start();  
-
 header('Content-Type: application/json; charset=utf-8');
 
-require('../src/db.php');
+require "./src/service_helpers.php";
+require "./src/db.php";
 
-$uri = $_SERVER['REQUEST_URI'];
+$path = parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
 $method = $_SERVER["REQUEST_METHOD"];
-$segments = explode("/", trim($uri,"/"));
+$segments = explode("/", trim($path,"/"));
+$body = json_decode(file_get_contents("php://input")) ?? null;
+$params = (object) $_GET;
 
-switch($segments[0]){
-    case 'auth':
-        require('../src/auth.php');
+switch($segments[0] ?? null){
+    case 'users':
+        require('./src/auth_service.php');
+        require('./src/auth_controller.php');
         break;
     case 'contacts':
-        if (isset($_SESSION['user_id'])) {
-            require('../src/contacts.php');
-            break;
-        }else{
-            http_response_code(403);
-            echo json_encode(["error" => "You are not authorized to make this request. You are not logged in"]);
-            die();
-        }
+        require('./src/contacts_service.php');
+        require('./src/contacts_controller.php');
+        break;
     default:
-        http_response_code(400);
-        echo json_encode(["error" => "invalid request uri, or server request uri parsing error"]);
-        die();
+        error_response(400, "invalid request uri, or server request uri parsing error");
 }
