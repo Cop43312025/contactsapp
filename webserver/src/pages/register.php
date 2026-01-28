@@ -18,7 +18,7 @@
 
   <h1><?php echo $title; ?></h1>
 
-  <form method="post" action="">
+  <form action="?page=contact_list" method="post">
     <p>
       <label>
         Username:<br>
