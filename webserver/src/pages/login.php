@@ -17,6 +17,9 @@
     <button type="submit">Login</button>
   </form>
 
+
+  <button onclick="window.location.href='register.php'">Create Account</button>
+
   <p id="msg"></p>
 
 <script src="/js/login.js"></script>
