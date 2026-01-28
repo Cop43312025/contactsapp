@@ -8,21 +8,20 @@ function signup($conn, $body){
     $stmt = $conn->prepare("SELECT username FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
 
-    if(!$stmt->execute()) { 
-        error_response(500, "problem adding user data to the database");
+    $data = execute_stmt($stmt);
+    
+    if(count($data)!=0){
+        send_response(409,false,[],'Invalid credentials'); 
     }
 
-    $result = $stmt->get_result();
-    if($result->num_rows != 0){
-        error_response(409, "username is not valid");
-    }
+    $token = bin2hex(random_bytes(32));
 
-    $stmt->close();
+    $stmt = $conn->prepare("INSERT INTO users (username, password_hash, token) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $username, $password_hash, $token);
+    $data = execute_stmt($stmt);
+    $data = [['username'=>$username, 'id'=>$conn->insert_id, 'token'=>$token]];
 
-    $stmt = $conn->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
-    $stmt->bind_param("ss", $username, $password_hash);
-
-    execute_stmt_and_respond($stmt);
+    send_response(200,true,$data,null);
 
 }
 
@@ -31,30 +30,48 @@ function login($conn, $body){
     $username = $body->username;
     $password = $body->password;
 
-    $stmt = $conn->prepare("SELECT password_hash FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
 
-    if(!$stmt->execute()) { 
-        error_response(500, "problem adding user data to the database");
+    $data = execute_stmt($stmt);
+
+    if(count($data)==0){
+        send_response(401,false,[],'Invalid credentials');
     }
 
-    $result = $stmt->get_result();
-    if($result->num_rows != 1){
-        error_response(409, "username is not valid");
+    if(count($data)!=1){
+        send_response(500,false,[],'Database contains duplicate usernames. Please resolve'); 
     }
 
-    $user = $result->fetch_object();
-    $password_hash = $user->password_hash;
+    $password_hash = $data[0]['password_hash'];
 
-    $stmt->close();
-    
     if(password_verify($password, $password_hash)){
-        success_response(200,"You are logged in");
+        $data = [['username'=>$data[0]['username'], 'id'=>$data[0]['id'], 'token'=>$data[0]['token']]];
+        send_response(200,true,$data,null);
     }
 
-    error_response(401,"Invalid credentials");
+    send_response(401,false,[],'Invalid credentials');
+
 }
 
-function logout(){
-    success_response(200, "Successful logout");
+function logout($conn, $token){
+
+    if($token){
+
+        $stmt = $conn->prepare("UPDATE users SET token = NULL WHERE token = ?");
+        $stmt->bind_param("s", $token);
+        $data = execute_stmt($stmt);
+
+        $changed = $conn->affected_rows;
+        if ($changed === 1) {
+            send_response(200, true, [], null); 
+        } 
+        else {
+            send_response(401, false, [], "Invalid token"); 
+        }
+    }
+    else{
+        send_response(200, true, [], null);      
+    }
+
 }

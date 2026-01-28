@@ -1,40 +1,40 @@
 <?php
 
-function error_response($status_code, $err){
-    http_response_code($status_code);
-    echo json_encode(["success" => false, "data" => null, "error"=>$err]);
-    exit;
-}
-
-function success_response($status_code, $data){
-    http_response_code($status_code);
-    echo json_encode(["success" => true, "data" => $data, "error"=>null]);
-    exit;
-}
-
-function execute_stmt_and_respond($stmt) {
+function execute_stmt($stmt) {
 
     try {
         $stmt->execute();
     }catch( mysqli_sql_exception $e){
-        error_response(500, $e->getMessage());
-        $stmt->close();
-        return;   
+        send_response(500, false, [], $e->getMessage());
     }
+    $result=$stmt->get_result();
+    $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 
-    $result = $stmt->get_result();
-
-    if ($result !== false) {
-        $rows = $result->fetch_all(MYSQLI_ASSOC);
-        if (count($rows) === 0) {
-            error_response(401, "Invalid credentials");
-        } else {
-            success_response(200, $rows);
-        }
-        $stmt->close();
-        return;
-    }
-
-    $stmt->affected_rows > 0 ? success_response(200, null) : error_response(400, "No rows affected");
     $stmt->close();
+    return $data;
+}
+
+function send_response($status, $success, $data, $error){
+    header('Content-Type: application/json');
+    http_response_code($status);
+    $response = ['success' => $success, 'data' => $data, 'error' => $error];
+    echo json_encode($response);
+    exit;
+}
+
+function token_check($conn, $token){
+    if(!$token){
+        return null;
+    }    
+    $stmt = $conn->prepare("SELECT id, username FROM users WHERE token = ?");
+    $stmt->bind_param("s", $token);
+    $data = execute_stmt($stmt);
+    if(count($data)==0){
+        return null;   
+    }
+    if(count($data)!=1){
+        send_response(500,false,[],"Database contains duplicate tokens. Please resolve");
+    }
+    return $data[0]['id'];
+
 }

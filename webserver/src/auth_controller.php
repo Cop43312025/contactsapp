@@ -1,6 +1,8 @@
 <?php
 
-switch ($segments[1] ?? null){
+$action = $segments[1] ?? null;
+
+switch ($action){
 
     case "signup":
         signup($conn, $body);
@@ -11,10 +13,10 @@ switch ($segments[1] ?? null){
         break;
 
     case "logout":
-        logout();
+        logout($conn, $token);
         break;
 
     default:
-        error_response(400, "invalid request uri, or server request uri parsing error");
+        send_response(400, false, [], "Invalid action");
 
 }

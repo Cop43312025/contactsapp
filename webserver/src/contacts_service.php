@@ -1,8 +1,7 @@
 <?php
 
-function read_contact($conn, $params){
+function read_contact($conn, $owner_id, $params){
     
-        $owner_id = $params -> owner_id ?? '';
         $first_name = $params->first_name ?? '';
         $last_name = $params->last_name ?? '';
         $email = $params->email ?? '';
@@ -11,12 +10,12 @@ function read_contact($conn, $params){
         $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ? AND first_name LIKE CONCAT(?, '%') AND last_name  LIKE CONCAT(?, '%') AND email  LIKE CONCAT(?, '%') AND phone  LIKE CONCAT(?, '%')");
         $stmt->bind_param("issss", $owner_id, $first_name, $last_name, $email, $phone);
 
-        execute_stmt_and_respond($stmt);
+       $data = execute_stmt($stmt);
+       send_response(200, true, $data, null);
 }
 
-function create_contact($conn, $body){
+function create_contact($conn, $owner_id, $body){
     
-        $owner_id = $body->owner_id ?? null;
         $first_name = $body->first_name ?? null;
         $last_name = $body->last_name  ?? null;
         $email = $body->email ?? null;
@@ -25,14 +24,14 @@ function create_contact($conn, $body){
         $stmt = $conn->prepare("INSERT INTO contacts (owner_id, first_name, last_name, email, phone) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("issss",$owner_id,$first_name,$last_name,$email,$phone);
         
-        execute_stmt_and_respond($stmt);
+       $data = execute_stmt($stmt);
+       send_response(200, true, $data, null);
 
 }
 
-function update_contact($conn, $id, $body) {
+function update_contact($conn, $owner_id, $id, $body) {
     
     $contact_id = $id ?? null;
-    $owner_id = $body->owner_id ?? null;
     $first_name = $body->first_name ?? null;
     $last_name = $body->last_name ?? null;
     $email = $body->email ?? null;
@@ -41,16 +40,27 @@ function update_contact($conn, $id, $body) {
     $stmt = $conn->prepare("UPDATE contacts SET first_name=?, last_name=?, email=?, phone=? WHERE id=? AND owner_id=?");
     $stmt->bind_param("ssssii", $first_name, $last_name, $email, $phone, $contact_id, $owner_id);
 
-    execute_stmt_and_respond($stmt);
+    $data = execute_stmt($stmt);
+    
+    $changed = $conn->affected_rows;
+    if ($changed === 0) {
+        send_response(400, false, [], "No change");
+    }
+    send_response(200, true, $data, null);
 }
 
-function delete_contact($conn, $id, $body) {
+function delete_contact($conn, $owner_id, $id) {
 
     $contact_id = $id ?? null;
-    $owner_id = $body->owner_id ?? null;
     
     $stmt = $conn->prepare("DELETE FROM contacts WHERE id=? AND owner_id=?");
     $stmt->bind_param("ii", $contact_id, $owner_id);
 
-    execute_stmt_and_respond($stmt);
+    $data = execute_stmt($stmt);
+
+    $changed = $conn->affected_rows;
+    if ($changed === 0) {
+        send_response(400, false, [], "No change");
+    }
+    send_response(200, true, $data, null);
 }
