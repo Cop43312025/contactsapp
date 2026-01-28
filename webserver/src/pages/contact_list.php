@@ -6,29 +6,35 @@
   <title><?php echo $title; ?></title>
 </head>
 <body>
-  <nav>
-    <a href="/?page=login">Login</a> |
-    <a href="/?page=register">Create User</a> |
-    <a href="/?page=contact_list">Contacts</a> |
-    <a href="/?page=contact_create_and_edit">Create/Edit Contact</a>
-  </nav>
   <hr>
 
   <h1><?php echo $title; ?></h1>
 
   <ul>
-    <li>John Doe — <a href="/?page=contact_list&id=1">View</a></li>
-    <li>Jane Smith — <a href="/?page=contact_list&id=2">View</a></li>
-    <li>Alex Johnson — <a href="/?page=contact_list&id=3">View</a></li>
+    <li>John Doe — 
+      <select onchange="if(this.value) window.location.href=this.value">
+        <option value="">Actions</option>
+        <option value="/?page=contact_info&id=1">View</option>
+        <option value="/?page=contact_edit&id=1">Edit</option>
+        <option value="/?page=contact_delete&id=1">Delete</option>
+      </select>
+    </li>
+    <li>Jane Smith — 
+      <select onchange="if(this.value) window.location.href=this.value">
+        <option value="">Actions</option>
+        <option value="/?page=contact_info&id=1">View</option>
+        <option value="/?page=contact_edit&id=1">Edit</option>
+        <option value="/?page=contact_delete&id=1">Delete</option>
+      </select>
+    </li>
+    <li>Alex Johnson — 
+      <select onchange="if(this.value) window.location.href=this.value">
+        <option value="">Actions</option>
+        <option value="/?page=contact_info&id=1">View</option>
+        <option value="/?page=contact_edit&id=1">Edit</option>
+        <option value="/?page=contact_delete&id=1">Delete</option>
+      </select>
+    </li>
   </ul>
-
-  <?php if (isset($_GET['id'])): ?>
-    <hr>
-    <h2>Viewing Contact ID: <?php echo htmlspecialchars($_GET['id']); ?></h2>
-    <p><b>Name:</b> Placeholder Name</p>
-    <p><b>Email:</b> placeholder@email.com</p>
-    <p><b>Phone:</b> 555-555-5555</p>
-    <p><a href="/?page=contact_create_and_edit&id=<?php echo htmlspecialchars($_GET['id']); ?>">Edit this contact</a></p>
-  <?php endif; ?>
 </body>
 </html>

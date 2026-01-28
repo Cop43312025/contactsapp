@@ -17,6 +17,9 @@
     <button type="submit">Login</button>
   </form>
 
+
+  <a href="/?page=register">Register Account</a>
+
   <p id="msg"></p>
 
 
