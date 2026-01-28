@@ -1,5 +1,3 @@
 .ansible/
 .vscode/
-branch_description.txt
-difflog.txt
-old_code
+local_tests
