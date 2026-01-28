@@ -18,7 +18,7 @@
   </form>
 
 
-  <button onclick="window.location.href='register.php'">Create Account</button>
+  <a href="/?page=register">Register Account</a>
 
   <p id="msg"></p>
 
