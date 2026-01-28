@@ -12,8 +12,7 @@ services:
   web:
     build: ./webserver
     volumes: 
-    - ./webserver/public:/var/www/html
-    - ./webserver/src:/var/www/html/src
+    - ./webserver/src:/var/www/html
     restart: always
     environment:
       DB_HOST: db
