@@ -19,7 +19,9 @@
 
   <p id="msg"></p>
 
-<script src="/js/login.js"></script>
+
+<script src="/js/login.js"></script> <!--this works for now i believe but i def need to test more -->
+<!--just saying this so i can push it with reprocussion :D -->
 
 </body>
 </html>

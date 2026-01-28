@@ -1,4 +1,6 @@
 <?php $title = "Register"; ?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,28 +22,27 @@
     <p>
       <label>
         Username:<br>
-        <input type="text" name="username">
-      </label>
+        <input id="names" name="username" type="text" required>
     </p>
 
     <p>
       <label>
         Email:<br>
-        <input type="email" name="email">
+        <input id="email" name="email" type="email" required>
       </label>
     </p>
 
     <p>
       <label>
         Password:<br>
-        <input type="password" name="password">
+        <input type="password" name="password" minlength="8" pattern="(?=.*[A-Za-z])(?=.*[^A-Za-z0-9]).+" title="must be 8 character, and include a letter, special character, and a title" required>
       </label>
     </p>
 
     <p>
       <label>
         Confirm Password:<br>
-        <input type="password" name="confirm_password">
+        <input type="password" name="confirm_password" required>
       </label>
     </p>
 
