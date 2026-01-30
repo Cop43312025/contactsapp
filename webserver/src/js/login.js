@@ -12,8 +12,9 @@ $("loginForm").addEventListener("submit", async (e) => {
   const username = $("username").value.trim();
   const password = $("password_hash").value;
   
-  if (username !=   && password !=  ){
-    
+  if (username === "" || password === "") {
+    msg.textContent = "Please fill in all fields";
+    return;
   }
 
   try {
