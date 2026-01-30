@@ -4,26 +4,27 @@ if($owner_id === null){
     send_response(401, false, [], "Unauthorized request");
 } 
 
-$contact_id = $segments[1] ?? null;
+$action = $segments[1] ?? null;
+$contact_id = $segments[2] ?? null;
 
-switch($method ?? null){ 
+switch($action ?? null){ 
 
-    case "GET":
+    case "view":
         read_contact($conn,$owner_id,$params);
         break;
 
-    case "POST":
+    case "create":
         create_contact($conn,$owner_id,$body);
         break;
 
-    case "PUT":
+    case "update":
         update_contact($conn,$owner_id,$contact_id,$body);
         break;
 
-    case "DELETE":
+    case "delete":
         delete_contact($conn,$owner_id,$contact_id);
         break;
 
     default:
-        send_response(405, false, [], "Invalid method");
+        send_response(405, false, [], "Invalid action");
 }

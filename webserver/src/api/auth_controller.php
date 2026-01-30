@@ -9,7 +9,7 @@ switch ($action){
         break;
 
     case "login":
-        login($conn, $body);
+        login($conn, $owner_id, $body);
         break;
 
     case "logout":

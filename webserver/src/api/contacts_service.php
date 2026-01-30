@@ -11,6 +11,7 @@ function read_contact($conn, $owner_id, $params){
         $stmt->bind_param("issss", $owner_id, $first_name, $last_name, $email, $phone);
 
        $data = execute_stmt($stmt);
+       $stmt->close();
        send_response(200, true, $data, null);
 }
 
@@ -25,6 +26,7 @@ function create_contact($conn, $owner_id, $body){
         $stmt->bind_param("issss",$owner_id,$first_name,$last_name,$email,$phone);
         
        $data = execute_stmt($stmt);
+       $stmt->close();
        send_response(200, true, $data, null);
 
 }
@@ -41,6 +43,7 @@ function update_contact($conn, $owner_id, $id, $body) {
     $stmt->bind_param("ssssii", $first_name, $last_name, $email, $phone, $contact_id, $owner_id);
 
     $data = execute_stmt($stmt);
+    $stmt->close();
     
     $changed = $conn->affected_rows;
     if ($changed === 0) {
@@ -57,6 +60,7 @@ function delete_contact($conn, $owner_id, $id) {
     $stmt->bind_param("ii", $contact_id, $owner_id);
 
     $data = execute_stmt($stmt);
+    $stmt->close();
 
     $changed = $conn->affected_rows;
     if ($changed === 0) {

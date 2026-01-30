@@ -1,5 +1,9 @@
 <?php
 
+set_error_handler(function ($severity, $message, $file, $line) {
+  throw new ErrorException($message, 0, $severity, $file, $line);
+});
+
 require "./api/service_helpers.php";
 require "./api/db.php";
 
@@ -24,7 +28,7 @@ try {
             require('./api/contacts_controller.php');
             break;
         default:
-            send_response(400, false, [], "Invalid request uri, or uri parsing error");
+            send_response(404, false, [], "404: Page not found");
     }
 }catch (Throwable $e) {
     send_response(500, false, [], $e->getMessage());

@@ -9,6 +9,7 @@ function signup($conn, $body){
     $stmt->bind_param("s", $username);
 
     $data = execute_stmt($stmt);
+    $stmt->close();
     
     if(count($data)!=0){
         send_response(409,false,[],'Invalid credentials'); 
@@ -19,13 +20,18 @@ function signup($conn, $body){
     $stmt = $conn->prepare("INSERT INTO users (username, password_hash, token) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $password_hash, $token);
     $data = execute_stmt($stmt);
+    $stmt->close();
     $data = [['username'=>$username, 'id'=>$conn->insert_id, 'token'=>$token]];
 
     send_response(200,true,$data,null);
 
 }
 
-function login($conn, $body){
+function login($conn, $owner_id, $body){
+
+    if($owner_id != null){
+        send_response(200, true, [], null);
+    } 
 
     $username = $body->username;
     $password = $body->password;
@@ -34,9 +40,10 @@ function login($conn, $body){
     $stmt->bind_param("s", $username);
 
     $data = execute_stmt($stmt);
+    $stmt->close();
 
     if(count($data)==0){
-        send_response(401,false,[],'Invalid credentials');
+        send_response(401,false,[$owner_id],'Invalid credentials');
     }
 
     if(count($data)!=1){
@@ -44,9 +51,17 @@ function login($conn, $body){
     }
 
     $password_hash = $data[0]['password_hash'];
+    $id = $data[0]['id'];
 
     if(password_verify($password, $password_hash)){
-        $data = [['username'=>$data[0]['username'], 'id'=>$data[0]['id'], 'token'=>$data[0]['token']]];
+
+        $token = bin2hex(random_bytes(32));
+        $stmt = $conn->prepare("UPDATE users SET token = ? WHERE username = ?");
+        $stmt->bind_param("ss", $token, $username);
+        $data = execute_stmt($stmt);
+        $stmt->close();
+
+        $data = [['username'=>$username, 'id'=>$id, 'token'=>$token]];
         send_response(200,true,$data,null);
     }
 
@@ -61,13 +76,15 @@ function logout($conn, $token){
         $stmt = $conn->prepare("UPDATE users SET token = NULL WHERE token = ?");
         $stmt->bind_param("s", $token);
         $data = execute_stmt($stmt);
-
-        $changed = $conn->affected_rows;
+        $changed = $stmt->affected_rows;
+        
+        $stmt->close();
+        
         if ($changed === 1) {
             send_response(200, true, [], null); 
         } 
         else {
-            send_response(401, false, [], "Invalid token"); 
+            send_response(401, false, [$changed], "Invalid token"); 
         }
     }
     else{
