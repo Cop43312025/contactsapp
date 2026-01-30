@@ -1,17 +1,19 @@
 info:
-  name: credLogin
+  name: update
   type: http
   seq: 2
 
 http:
   method: POST
-  url: http://localhost:8080/api/users/login
+  url: http://localhost:8080/api/contacts/update/6
   body:
     type: json
     data: |-
       {
-        "username": "lolo",
-        "password": "password"
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john@doe.com",
+        "phone": "1234567890"
       }
   auth: inherit
 

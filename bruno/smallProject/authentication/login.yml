@@ -1,14 +1,18 @@
 info:
-  name: logout
+  name: login
   type: http
-  seq: 4
+  seq: 1
 
 http:
   method: POST
-  url: http://localhost:8080/api/users/logout
+  url: http://localhost:8080/api/users/login
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "username": "cheese",
+        "password": "password"
+      }
   auth: inherit
 
 settings:
