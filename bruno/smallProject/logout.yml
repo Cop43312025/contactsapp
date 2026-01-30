@@ -5,7 +5,10 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/logout
+  url: http://localhost:8080/api/users/logout
+  body:
+    type: json
+    data: ""
   auth: inherit
 
 settings:

@@ -27,16 +27,12 @@ function token_check($conn, $token){
     if(!$token){
         return null;
     }    
-    $stmt = $conn->prepare("SELECT id, username FROM users WHERE token = ?");
+    $stmt = $conn->prepare("SELECT id FROM users WHERE token = ?");
     $stmt->bind_param("s", $token);
     $data = execute_stmt($stmt);
     $stmt->close();
     if(count($data)==0){
         return null;   
     }
-    if(count($data)!=1){
-        send_response(500,false,[],"Database contains duplicate tokens. Please resolve");
-    }
     return $data[0]['id'];
-
 }

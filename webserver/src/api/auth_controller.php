@@ -9,7 +9,7 @@ switch ($action){
         break;
 
     case "login":
-        login($conn, $owner_id, $body);
+        login($conn, $token, $body);
         break;
 
     case "logout":
@@ -17,6 +17,6 @@ switch ($action){
         break;
 
     default:
-        send_response(400, false, [], "Invalid action");
+        send_response(404, false, [], "Endpoint not found");
 
 }
