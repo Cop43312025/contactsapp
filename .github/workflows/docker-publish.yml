@@ -1,6 +1,7 @@
 name: Build and publish Docker images
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     tags: [ "v*" ]
@@ -13,7 +14,6 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  # This is OWNER/REPO
   IMAGE_BASE: ${{ github.repository }}
 
 jobs:
@@ -24,7 +24,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Adjust these to match your repo.
           - name: db
             dockerfile: ./database/Dockerfile
             context: ./database
