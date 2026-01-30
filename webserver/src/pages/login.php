@@ -7,12 +7,12 @@
 <body>
   <h1>Login</h1>
 
-  <form id="loginForm">
+  <form id="loginForm" action="#" method="post">
     <label>Username</label><br>
     <input id="username" type="text" required /><br><br>
 
     <label>Password</label><br>
-    <input id="password" type="password" required /><br><br>
+    <input id="password_hash" type="password" required /><br><br>
 
     <button type="submit">Login</button>
   </form>

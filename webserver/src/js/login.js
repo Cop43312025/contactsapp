@@ -10,7 +10,11 @@ $("loginForm").addEventListener("submit", async (e) => {
   msg.textContent = "Logging in...";
 
   const username = $("username").value.trim();
-  const password = $("password").value;
+  const password = $("password_hash").value;
+  
+  if (username !=   && password !=  ){
+    
+  }
 
   try {
     const res = await fetch("/api/auth.php", {
