@@ -8,7 +8,10 @@ http:
   url: http://localhost:8080/api/users/login
   body:
     type: json
-    data: "{}"
+    data: |-
+      {
+                "login_type": "token"
+      }
   auth: inherit
 
 settings:

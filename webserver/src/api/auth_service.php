@@ -31,7 +31,11 @@ function login($conn, $owner_id, $body){
 
     if($owner_id != null){
         send_response(200, true, [], null);
-    } 
+    }
+    
+    if($body->login_type=="token"){
+        send_response(401, false, [], "Invalid token");
+    }
 
     $username = $body->username;
     $password = $body->password;
@@ -77,7 +81,7 @@ function logout($conn, $token){
         $stmt->bind_param("s", $token);
         $data = execute_stmt($stmt);
         $changed = $stmt->affected_rows;
-        
+
         $stmt->close();
         
         if ($changed === 1) {
