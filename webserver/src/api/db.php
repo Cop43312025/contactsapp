@@ -1,22 +1,14 @@
 <?php
 
-namespace Src\Api;
-use mysqli;
+$servername = getenv("DB_HOST");
+$username = getenv("DB_USERNAME");
+$password = getenv("DB_PASSWORD");
+$dbname = getenv("DB_DATABASE");
 
-function dbConnect() 
-{
-    $host = getenv('DB_HOST');
-    $port = getenv('DB_PORT');
-    $database = getenv('DB_DATABASE');
-    $user = getenv('DB_USERNAME');
-    $pass = getenv('DB_PASSWORD');
-    
-    $connection = new mysqli($host, $user, $pass, $database, $port);
-    
-    if ($connection->connect_error) {
-        return null;
-    }
-    
-    return $connection;
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->set_charset("utf8mb4");
+
+if ($conn->connect_error){
+    send_response(500, false, [], 'Server failed to establish database connection');
+    exit();
 }
-
