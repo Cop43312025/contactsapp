@@ -1,11 +1,14 @@
 info:
-  name: logout
+  name: delete
   type: http
-  seq: 4
+  seq: 3
 
 http:
   method: POST
-  url: http://localhost:8080/api/logout
+  url: http://localhost:8080/api/contacts/delete/10
+  body:
+    type: json
+    data: ""
   auth: inherit
 
 settings:

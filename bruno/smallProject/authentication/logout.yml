@@ -1,18 +1,14 @@
 info:
-  name: credLogin
+  name: logout
   type: http
-  seq: 3
+  seq: 1
 
 http:
   method: POST
-  url: http://localhost:8080/api/users/login
+  url: http://localhost:8080/api/users/logout
   body:
     type: json
-    data: |-
-      {
-        "username": "Jacket",
-        "password": "password"
-      }
+    data: ""
   auth: inherit
 
 settings:

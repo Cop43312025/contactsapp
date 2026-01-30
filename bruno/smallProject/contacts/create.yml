@@ -1,18 +1,19 @@
 info:
-  name: signup
+  name: create
   type: http
   seq: 1
 
 http:
   method: POST
-  url: http://localhost:8080/api/users/signup
+  url: http://localhost:8080/api/contacts/create
   body:
     type: json
     data: |-
       {
-        "login_type":"credentials",
-        "username": "Lolo",
-        "password": "password"
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john@doesd.com",
+        "phone": "1234567890"
       }
   auth: inherit
 

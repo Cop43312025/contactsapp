@@ -26,5 +26,5 @@ switch($action ?? null){
         break;
 
     default:
-        send_response(405, false, [], "Invalid action");
+        send_response(404, false, [], "Endpoint not found");
 }
