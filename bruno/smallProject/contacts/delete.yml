@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/contacts/delete/1
+  url: http://localhost:8080/api/contacts/delete/10
   body:
     type: json
     data: ""

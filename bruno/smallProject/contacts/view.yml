@@ -5,7 +5,14 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/contacts/view/
+  url: http://localhost:8080/api/contacts/view/?first_name=john
+  params:
+    - name: first_name
+      value: john
+      type: query
+  body:
+    type: json
+    data: ""
   auth: inherit
 
 settings:

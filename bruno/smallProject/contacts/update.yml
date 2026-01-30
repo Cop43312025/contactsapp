@@ -5,14 +5,14 @@ info:
 
 http:
   method: POST
-  url: http://localhost:8080/api/contacts/update/6
+  url: http://localhost:8080/api/contacts/update/11
   body:
     type: json
     data: |-
       {
         "first_name": "John",
         "last_name": "Doe",
-        "email": "john@doe.com",
+        "email": "john@does.com",
         "phone": "1234567890"
       }
   auth: inherit
