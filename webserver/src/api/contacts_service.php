@@ -67,7 +67,7 @@ function update_contact($conn, $owner_id, $id, $body) {
     $stmt->bind_param(str_repeat("s", count($params) - 2) . "ii", ...$params);
 
     execute_stmt($stmt);
-    $changed = $conn->affected_rows;
+    $changed = $stmt->affected_rows;
     $stmt->close();
     
     if ($changed === 0) {
@@ -94,7 +94,7 @@ function delete_contact($conn, $owner_id, $id) {
     $stmt = $conn->prepare("DELETE FROM contacts WHERE id=? AND owner_id=?");
     $stmt->bind_param("ii", $contact_id, $owner_id);
     $data = execute_stmt($stmt);
-    $changed = $conn->affected_rows;
+    $changed = $stmt->affected_rows;
     $stmt->close();
 
     if ($changed === 0) {

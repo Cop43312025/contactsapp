@@ -12,10 +12,9 @@ function signup($conn, $body){
     // Check if username already exists
     $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $data = execute_stmt($stmt);
     $stmt->close();
-    if ($result->num_rows > 0) {
+    if (count($data) > 0) {
         send_response(500, false, [],"User already exists");
     }
 
