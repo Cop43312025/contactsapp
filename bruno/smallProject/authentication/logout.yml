@@ -1,0 +1,18 @@
+info:
+  name: logout
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/users/logout
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

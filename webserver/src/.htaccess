@@ -1,0 +1,11 @@
+DirectoryIndex index.html index.php
+
+RewriteEngine On 
+
+# If the file or directory exists, serve it 
+RewriteCond %{REQUEST_FILENAME} -f [OR] 
+RewriteCond %{REQUEST_FILENAME} -d 
+RewriteRule ^ - [L] 
+
+# Otherwise route everything to index.php 
+RewriteRule ^ index.php [L]

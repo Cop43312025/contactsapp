@@ -1,17 +1,17 @@
 info:
-  name: tokenLogin
+  name: login
   type: http
-  seq: 2
+  seq: 1
 
 http:
   method: POST
-  url: http://localhost:8080/api/auth.php
+  url: http://localhost:8080/api/users/login
   body:
     type: json
     data: |-
       {
-        "login_type": "token",
-        "token": "02ea1e6d34b4b54685c078fd02b5e72bdf5e34dcc83447e168e1df41500eb682"
+        "username": "cheese",
+        "password": "password"
       }
   auth: inherit
 

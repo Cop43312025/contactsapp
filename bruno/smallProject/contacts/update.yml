@@ -1,0 +1,24 @@
+info:
+  name: update
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:8080/api/contacts/update/11
+  body:
+    type: json
+    data: |-
+      {
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john@does.com",
+        "phone": "1234567890"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
