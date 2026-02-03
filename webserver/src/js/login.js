@@ -1,11 +1,27 @@
-function $(id) { return document.getElementById(id); }
+// Check if user has a valid token on page load
+async function checkExistingToken() {
+  try {
+    const res = await fetch("/api/users/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
 
-function setCookie(name, value, maxAge) {
-  document.cookie =
-    name + "=" + encodeURIComponent(value) +
-    "; Path=/; Max-Age=" + maxAge +
-    "; SameSite=Lax";
+    const data = await res.json();
+
+    if (data.success && data.data && data.data.length > 0) {
+      // Valid token, redirect to contacts
+      location.href = "/contacts.html";
+    }
+    // If invalid or expired, silently fail and show login form
+  } catch (err) {
+    // Silently fail on error
+    console.debug("Token check failed, showing login form");
+  }
 }
+
+// Check for valid token on page load
+checkExistingToken();
 
 $("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -17,10 +33,10 @@ $("loginForm").addEventListener("submit", async (e) => {
   const password = $("password").value;
 
   try {
-    const res = await fetch("/api/auth_controller.php", {
+    const res = await fetch("/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login_type: "credential", username, password }),
+      body: JSON.stringify({ username, password }),
     });
 
     const text = await res.text();
@@ -33,16 +49,13 @@ $("loginForm").addEventListener("submit", async (e) => {
     }
 
     // If API says no
-    if (!res.ok || data.success === false || data.token == null) {
+    if (!res.ok || data.success === false) {
       msg.textContent = data.message || data.error || `Login failed (${res.status})`;
       return;
     }
 
-    // remembers the user for 1 day cause why not, just here so that i can see if it works
-    setCookie("token", data.token, 86400);
-
     msg.textContent = "Logged in!";
-    location.href = "/?page=contact_list";
+    location.href = "/contacts.html";
   } catch (err) {
     msg.textContent = "Login failed";
   }

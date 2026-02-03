@@ -2,10 +2,14 @@ DirectoryIndex index.html index.php
 
 RewriteEngine On 
 
-# If the file or directory exists, serve it 
+# If the file or directory exists in root, serve it 
 RewriteCond %{REQUEST_FILENAME} -f [OR] 
 RewriteCond %{REQUEST_FILENAME} -d 
 RewriteRule ^ - [L] 
+
+# If the file exists in pages directory, serve it
+RewriteCond %{DOCUMENT_ROOT}/pages%{REQUEST_URI} -f
+RewriteRule ^(.*)$ pages/$1 [L]
 
 # Otherwise route everything to index.php 
 RewriteRule ^ index.php [L]
