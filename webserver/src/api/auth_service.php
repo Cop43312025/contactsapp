@@ -54,11 +54,16 @@ function login($conn, $token, $body){
     $username = $body->username;
     $password = $body->password;
 
+
     // Fetch user by username
     $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $data = execute_stmt($stmt);
     $stmt->close();
+
+    if (count($data) === 0){
+        send_response(401,false,[],'Invalid credentials');
+    }
 
     $password_hash = $data[0]['password_hash'];
     $id = $data[0]['id'];

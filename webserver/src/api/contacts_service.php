@@ -2,13 +2,27 @@
 
 function read_contact($conn, $owner_id, $params){
     
+    $id = $params->id ?? null;
     $first_name = $params->first_name ?? '';
     $last_name = $params->last_name ?? '';
     $email = $params->email ?? '';
     $phone = $params->phone ?? '';
 
-    $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ? AND first_name LIKE CONCAT(?, '%') AND last_name  LIKE CONCAT(?, '%') AND email  LIKE CONCAT(?, '%') AND phone  LIKE CONCAT(?, '%')");
-    $stmt->bind_param("issss", $owner_id, $first_name, $last_name, $email, $phone);
+    // If ID is provided, fetch specific contact
+    if ($id) {
+        $stmt = $conn->prepare("SELECT * FROM contacts WHERE id = ? AND owner_id = ?");
+        $stmt->bind_param("ii", $id, $owner_id);
+    } 
+    // If any search term is provided, use OR logic
+    else if ($first_name || $last_name || $email || $phone) {
+        $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ? AND (first_name LIKE CONCAT('%', ?, '%') OR last_name LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%') OR phone LIKE CONCAT('%', ?, '%'))");
+        $stmt->bind_param("issss", $owner_id, $first_name, $last_name, $email, $phone);
+    } 
+    // Otherwise return all
+    else {
+        $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ?");
+        $stmt->bind_param("i", $owner_id);
+    }
 
     $data = execute_stmt($stmt);
     $stmt->close();
