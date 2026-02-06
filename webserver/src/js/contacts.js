@@ -2,13 +2,11 @@
 async function loadContacts(searchQuery = '') {
   try {
     let url = "/api/contacts/view";
-    if (searchQuery) {
-      url += `?first_name=${encodeURIComponent(searchQuery)}&last_name=${encodeURIComponent(searchQuery)}&email=${encodeURIComponent(searchQuery)}&phone=${encodeURIComponent(searchQuery)}`;
-    }
-    
+       
     const res = await fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ search: searchQuery })
     });
 
     const data = await res.json();
