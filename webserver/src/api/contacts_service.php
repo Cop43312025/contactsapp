@@ -9,7 +9,7 @@ function read_contact($conn, $owner_id, $body){
     foreach($query_exprs as $expr){
         $db_query .= "AND (first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone LIKE ?) ";
         $types .= "ssss";
-        $expr = "%$expr%";
+        $expr = "$expr%";
         array_push($params, $expr, $expr, $expr, $expr);
     }   
     $stmt = $conn->prepare($db_query);
