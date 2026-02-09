@@ -6,7 +6,7 @@ async function loadContacts(searchQuery = '') {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ search: searchQuery })
+      body: JSON.stringify({ search_query: searchQuery })
     });
 
     const data = await res.json();
