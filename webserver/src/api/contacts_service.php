@@ -12,6 +12,7 @@ function read_contact($conn, $owner_id, $body){
         $expr = "$expr%";
         array_push($params, $expr, $expr, $expr, $expr);
     }   
+    $db_query .= "ORDER BY first_name ASC, last_name ASC, email ASC, phone ASC";
     $stmt = $conn->prepare($db_query);
     $stmt->bind_param($types,$owner_id,...$params);
     $data = execute_stmt($stmt);
