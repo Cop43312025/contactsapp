@@ -44,8 +44,9 @@ function displayContacts(contacts) {
       details += `<p class="contact-field"><span class="field-label">Email</span> <a href="mailto:${contact.email}">${contact.email}</a></p>`;
     }
     if (contact.phone) {
-      const phoneDigits = contact.phone.replace(/\D/g, '');
-      details += `<p class="contact-field"><span class="field-label">Phone</span> <a href="tel:+${phoneDigits}">${contact.phone}</a></p>`;
+      const d = contact.phone.replace(/\D/g, '');
+      const formatted = `(${d.slice(0,3)})-${d.slice(3,6)}-${d.slice(6)}`;
+      details += `<p class="contact-field"><span class="field-label">Phone</span> <a href="tel:+1${d}">${formatted}</a></p>`;
     }
     
     return `
