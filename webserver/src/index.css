@@ -1,0 +1,23 @@
+/* style the body */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    font-family: sans-serif;
+
+    /* set the background color to a gray */
+    background-color: #C0C0C0;
+
+    /* Flexbox to keep everything centered */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* added two borders to add like a monitor looking thing */
+    box-shadow:
+        inset 0 0 0 8px #555,
+        inset 0 0 0 16px #333;
+}
