@@ -26,7 +26,7 @@ function create_contact($conn, $owner_id, $body){
     $first_name = $body->first_name ?? null;
     $last_name = $body->last_name  ?? null;
     $email = $body->email ?? null;
-    $phone = $body->phone ?? null;
+    $phone = preg_replace('/(?<=\d)-/', '', $body->phone ?? null);
     
     $stmt = $conn->prepare("INSERT INTO contacts (owner_id, first_name, last_name, email, phone) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("issss",$owner_id,$first_name,$last_name,$email,$phone);
@@ -57,7 +57,7 @@ function update_contact($conn, $owner_id, $id, $body) {
     }
     if (isset($body->phone)) {
         $fields[] = "phone=?";
-        $params[] = $body->phone;
+        $params[] = preg_replace('/(?<=\d)-/', '', $body->phone);
     }
 
     if (empty($fields)) {
