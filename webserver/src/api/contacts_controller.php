@@ -10,7 +10,7 @@ $contact_id = $segments[2] ?? null;
 switch($action ?? null){ 
 
     case "view":
-        read_contact($conn,$owner_id,$params);
+        read_contact($conn,$owner_id,$body);
         break;
 
     case "create":
