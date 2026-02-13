@@ -2,7 +2,8 @@
 
 function read_contact($conn, $owner_id, $body){
 
-    $query_exprs = array_filter(explode(' ',$body->search_query ?? ""));
+    $search_query = preg_replace('/(?<=\d)-/', '', $body->search_query ?? "");
+    $query_exprs = array_filter(explode(' ',$search_query));
     $db_query = "SELECT * FROM contacts WHERE owner_id = ? "; 
     $types = "i";
     $params = [];
