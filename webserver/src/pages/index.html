@@ -1,10 +1,12 @@
 <!DOCTYPE html> <!-- added comments for context, will delete later -->
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" /> 
   <title>Login</title> 
 
   <link rel="stylesheet" href="index.css"> <!-- so that the css file can actually change the style the page -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta name="description" content="Login page for the Contacts app">
    <!-- got rid of everything here cause it overlaps with the css style -->
 
 </head>
@@ -19,10 +21,10 @@
     <div class="info-box-holder">
 
       <form id="loginForm" action="#" method="post"> 
-        <label>Username:</label> 
+        <label for="username">Username:</label>
         <input id="username" type="text" required /> 
 
-        <label>Password:</label> 
+        <label for="password">Password:</label>
         <input id="password" type="password" required /> 
 
         <button type="submit" class="login-button">Log In</button>

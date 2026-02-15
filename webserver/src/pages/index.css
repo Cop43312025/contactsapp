@@ -35,7 +35,7 @@ body{
 /* moon, small bug with the logo will fix after push */
 .moon{
     position:absolute;
-    top:73px;
+    top:6.5%;
     left:50%;
     transform:translateX(-50%);
     width:260px;
@@ -47,6 +47,7 @@ body{
 .info-box-holder{
     position:relative; 
     width:650px;
+    top: 30px;
     /* dont add height, its gonna uncentered everything padding is better and SIMPLER */
 
     background:#e9b6dd; 
@@ -81,15 +82,18 @@ input{
     font-weight:bold;
     cursor:pointer;
     font-family: 'Press Start 2P';
+    font-size: 16px;
 }
 
 .register-button{
     text-align:center;
+    margin-top:10px;
     background:rgb(154, 49, 177); /*rgb(49, 177, 72);*/
     color:white;
     border:3px solid black;
     padding:10px;
     text-decoration:none;
+    font-size: 16px;
     font-weight:bold;
 }
 
