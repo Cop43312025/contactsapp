@@ -1,5 +1,7 @@
 /* leaving some comments in case anyone wants to mess around, gonna remove prob */
 /* reset. just to ensure everything looks the same on every browser */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); 
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -22,7 +24,7 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    font-family: sans-serif; /* temp */
+    font-family:  'Press Start 2P';
 }
 
 /* moon, small bug with the logo will fix after push */
@@ -73,6 +75,7 @@ input{
     padding:10px;
     font-weight:bold;
     cursor:pointer;
+    font-family: 'Press Start 2P';
 }
 
 .register-button{

@@ -1,5 +1,7 @@
 /* leaving some comments in case anyone wants to mess around, gonna remove prob */
 /* reset. just to ensure everything looks the same on every browser */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); 
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -22,7 +24,7 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    font-family: sans-serif; /* temp */
+    font-family: 'Press Start 2P'; /* temp */
 }
 
 /* moon, small bug with the logo will fix after push */
@@ -37,9 +39,12 @@ body{
 }
 
 /* box that has the inputs and buttons */
-.info-box-holder{
-    position:relative; 
+.info-box-holder{ 
+    position:absolute;
+    top:28%;
     width:650px;
+    left:50%;
+    transform:translateX(-50%);
     /* dont add height, its gonna uncentered everything padding is better and SIMPLER */
 
     background:#e9b6dd; 
@@ -66,13 +71,13 @@ input{
 
 /* buttons :D */
 .login-button{
-    margin-top:10px;
+    text-align:center;
     background:rgb(38, 11, 137); 
     color:white;
     border:3px solid black;
     padding:10px;
+    text-decoration:none;
     font-weight:bold;
-    cursor:pointer;
 }
 
 .register-button{
@@ -83,6 +88,7 @@ input{
     padding:10px;
     text-decoration:none;
     font-weight:bold;
+    font-family: 'Press Start 2P';
 }
 
 .or{
