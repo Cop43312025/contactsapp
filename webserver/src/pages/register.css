@@ -20,7 +20,7 @@
     height:100%;
     object-fit:cover; /* this just ensures the image takes up the entire backgrounf */
     image-rendering:pixelated; /* this keeps the resolution high, and doesn't make it look like a horrble low-res mess */
-
+    opacity: 0.25;
 }
 
 /* body */
@@ -30,6 +30,7 @@ body{
     justify-content:center;
     align-items:center;
     font-family: 'Press Start 2P'; /* temp */
+    background: #2a1a2e;
 }
 
 /* moon, small bug with the logo will fix after push */

@@ -30,7 +30,7 @@ body{
     justify-content:center;
     align-items:center;
     font-family:  'Press Start 2P';
-    background: rgba(0, 0, 0);
+    background: #2a1a2e;
 }
 
 /* moon, small bug with the logo will fix after push */
