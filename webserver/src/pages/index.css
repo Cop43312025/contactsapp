@@ -27,6 +27,11 @@ input{
       --danger-red: #cc2233;
     }
 
+    :focus {
+      border-color: var(--purple-accent);
+      box-shadow: 0 0 8px rgba(154, 49, 177, 0.2);
+      outline: none;
+    }
     
 
 *{
