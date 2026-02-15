@@ -35,7 +35,7 @@ body{
 /* moon, small bug with the logo will fix after push */
 .moon{
     position:absolute;
-    top:73px;
+    top:6.5%;
     left:50%;
     transform:translateX(-50%);
     width:260px;
@@ -83,6 +83,7 @@ input{
     padding:10px;
     text-decoration:none;
     font-weight:bold;
+    font-size: 16px;
 }
 
 .register-button{
@@ -94,6 +95,7 @@ input{
     text-decoration:none;
     font-weight:bold;
     font-family: 'Press Start 2P';
+    font-size: 16px;
 }
 
 .or{

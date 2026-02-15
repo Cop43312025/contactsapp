@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
   <meta charset="utf-8" />
   <title>Register</title>
+
+  <meta name="description" content="Register page for the Contacts app">
+
   <link rel="stylesheet" href="register.css"> <!-- so that the css file can actually change the style the page -->
   <!-- also deleted style here sowwy -->
   
@@ -20,13 +23,13 @@
     <div class="info-box-holder">
 
       <form id="registerForm" action="#" method="post">
-        <label>Username</label>
+        <label for="username">Username:</label>
         <input id="username" type="text" required />
 
-        <label>Password</label>
+        <label for="password">Password:</label>
         <input id="password" type="password" minlength="8" required />
 
-        <label>Confirm Password</label>
+        <label for="confirmPassword">Confirm Password:</label>
         <input id="confirmPassword" type="password" required />
 
         <button type="submit" class="register-button">Register</button>
