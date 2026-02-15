@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Manage your crew's contact info in the crew log.">
   <title>Crew Log</title>
 
   <style>
@@ -41,6 +42,10 @@
       padding-bottom: 80px;
     }
 
+    main {
+      width: 100%;
+    }
+    
     /* ─── SPACE BACKGROUND ─── */
     body::before {
       content: '';
@@ -242,6 +247,8 @@
       font-family: 'Press Start 2P', monospace;
       font-size: 0.55rem;
       transition: color 0.2s;
+      padding: 6px 4px;
+      display: inline-block;
     }
 
     .contact-field a:hover {
@@ -315,7 +322,7 @@
     /* ─── FAB BUTTON ─── */
     #addContactBtn {
       position: fixed;
-      bottom: 90px;
+      bottom: 64px;
       right: 28px;
       padding: 14px 20px;
       font-family: 'Press Start 2P', monospace;
@@ -493,32 +500,34 @@
   </style>
 </head>
 <body>
+  <main>
+    <div class="console-frame">
 
-  <div class="console-frame">
-
-    <div id="header">
-      <div id="headerLeft">
-        <div class="status-light"></div>
-        Crew Log
-      </div>
-      <input type="text" id="searchInput" placeholder=">> SEARCH CREW  LOG..." />
-      <div id="headerRight">
-        <div id="userInfoSection">
-          <span id="userInfo">Loading...</span>
-          <a id="logoutLink">Eject</a>
+      <div id="header">
+        <div id="headerLeft">
+          <div class="status-light"></div>
+          Crew Log
+        </div>
+        <input type="text" id="searchInput" placeholder=">> SEARCH CREW  LOG..." />
+        <div id="headerRight">
+          <div id="userInfoSection">
+            <span id="userInfo">Loading...</span>
+            <a id="logoutLink">Eject</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="section-bar">
-      <div class="section-label">Crew Manifest</div>
-    </div>
+      <div class="section-bar">
+        <div class="section-label">Crew Manifest</div>
+      </div>
 
-    <div id="contactsContainer">
-      <div class="empty-state">[ LOADING CREW DATA... ]</div>
-    </div>
+      <div id="contactsContainer">
+        <div class="empty-state">[ LOADING CREW DATA... ]</div>
+      </div>
 
-  </div>
+    </div>
+  </main>
+  
 
   <button id="addContactBtn">+ Add Contact</button>
 

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Add a crewmate and their info to the crew log.">
   <title>Add Crew Member</title>
   <style>
     @font-face {
@@ -37,6 +38,10 @@
       background: #2a1a2e;
       overflow-x: hidden;
       padding-bottom: 80px;
+    }
+
+    main {
+      width: 100%;
     }
 
     /* ─── SPACE BACKGROUND ─── */
@@ -335,42 +340,44 @@
   </style>
 </head>
 <body>
+  <main>
+    <div class="console-frame">
 
-  <div class="console-frame">
+        <div class="header">
+          <div class="header-title">
+            <div class="status-light"></div>
+            New Crew Member
+          </div>
+        </div>
 
-    <div class="header">
-      <div class="header-title">
-        <div class="status-light"></div>
-        New Crew Member
-      </div>
+        <div class="section-bar">
+          <div class="section-label">Personnel Entry</div>
+        </div>
+
+        <form id="addContactForm">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" required />
+
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Please enter a valid email address" />
+
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" pattern="[\(\s]?[0-9]{3}[\)\-\s]?[0-9]{3}[\-\s]?[0-9]{4}" placeholder="(123) 456-7890" title="Please enter a valid 10-digit US phone number" />
+
+          <div class="btn-row">
+            <button type="submit">Add to Crew</button>
+            <button type="button" class="btn-cancel" onclick="window.location.href='/contacts.html'">Abort</button>
+          </div>
+        </form>
+
+        <p id="msg"></p>
+
     </div>
-
-    <div class="section-bar">
-      <div class="section-label">Personnel Entry</div>
-    </div>
-
-    <form id="addContactForm">
-      <label>First Name</label>
-      <input id="firstName" type="text" required />
-
-      <label>Last Name</label>
-      <input id="lastName" type="text" />
-
-      <label>Email</label>
-      <input id="email" type="email" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Please enter a valid email address" />
-
-      <label>Phone</label>
-      <input id="phone" type="tel" pattern="[\(\s]?[0-9]{3}[\)\-\s]?[0-9]{3}[\-\s]?[0-9]{4}" placeholder="(123) 456-7890" title="Please enter a valid 10-digit US phone number" />
-
-      <div class="btn-row">
-        <button type="submit">Add to Crew</button>
-        <button type="button" class="btn-cancel" onclick="window.location.href='/contacts.html'">Abort</button>
-      </div>
-    </form>
-
-    <p id="msg"></p>
-
-  </div>
+  </main>
+  
 
   <div class="status-bar">
     <div class="status-left">
