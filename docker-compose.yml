@@ -20,8 +20,6 @@ services:
       DB_PASSWORD: mysqlrootpassword21
     ports:
       - "8080:80"
-    volumes:
-      - ./webserver/src:/var/www/html
     depends_on:
       - db
 
