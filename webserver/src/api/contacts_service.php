@@ -1,29 +1,21 @@
 <?php
 
-function read_contact($conn, $owner_id, $params){
-    
-    $id = $params->id ?? null;
-    $first_name = $params->first_name ?? '';
-    $last_name = $params->last_name ?? '';
-    $email = $params->email ?? '';
-    $phone = $params->phone ?? '';
+function read_contact($conn, $owner_id, $body){
 
-    // If ID is provided, fetch specific contact
-    if ($id) {
-        $stmt = $conn->prepare("SELECT * FROM contacts WHERE id = ? AND owner_id = ?");
-        $stmt->bind_param("ii", $id, $owner_id);
-    } 
-    // If any search term is provided, use OR logic
-    else if ($first_name || $last_name || $email || $phone) {
-        $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ? AND (first_name LIKE CONCAT('%', ?, '%') OR last_name LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%') OR phone LIKE CONCAT('%', ?, '%'))");
-        $stmt->bind_param("issss", $owner_id, $first_name, $last_name, $email, $phone);
-    } 
-    // Otherwise return all
-    else {
-        $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ?");
-        $stmt->bind_param("i", $owner_id);
-    }
-
+    $search_query = preg_replace('/(?<=\d)-/', '', $body->search_query ?? "");
+    $query_exprs = array_filter(explode(' ',$search_query));
+    $db_query = "SELECT * FROM contacts WHERE owner_id = ? "; 
+    $types = "i";
+    $params = [];
+    foreach($query_exprs as $expr){
+        $db_query .= "AND (first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone LIKE ?) ";
+        $types .= "ssss";
+        $expr = "$expr%";
+        array_push($params, $expr, $expr, $expr, $expr);
+    }   
+    $db_query .= "ORDER BY first_name ASC, last_name ASC, email ASC, phone ASC";
+    $stmt = $conn->prepare($db_query);
+    $stmt->bind_param($types,$owner_id,...$params);
     $data = execute_stmt($stmt);
     $stmt->close();
     send_response(200, true, $data, null);
@@ -34,7 +26,7 @@ function create_contact($conn, $owner_id, $body){
     $first_name = $body->first_name ?? null;
     $last_name = $body->last_name  ?? null;
     $email = $body->email ?? null;
-    $phone = $body->phone ?? null;
+    $phone = preg_replace('/(?<=\d)-/', '', $body->phone ?? null);
     
     $stmt = $conn->prepare("INSERT INTO contacts (owner_id, first_name, last_name, email, phone) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("issss",$owner_id,$first_name,$last_name,$email,$phone);
@@ -65,7 +57,7 @@ function update_contact($conn, $owner_id, $id, $body) {
     }
     if (isset($body->phone)) {
         $fields[] = "phone=?";
-        $params[] = $body->phone;
+        $params[] = preg_replace('/(?<=\d)-/', '', $body->phone);
     }
 
     if (empty($fields)) {
