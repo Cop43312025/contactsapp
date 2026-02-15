@@ -1,6 +1,11 @@
 /* leaving some comments in case anyone wants to mess around, gonna remove prob */
 /* reset. just to ensure everything looks the same on every browser */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); 
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('/assets/PressStart2P-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+} 
 
 *{
     box-sizing:border-box;
