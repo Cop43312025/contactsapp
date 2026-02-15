@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Contacts App
-  version: 1.0.0
+  version: 1.0.1
 security:
   - cookieAuth: []
 paths:
@@ -135,12 +135,16 @@ components:
       properties:
         first_name:
           type: string
+          example: "John"
         last_name:
           type: string
+          example: "Doe"
         email:
           type: string
+          example: "John@doe.com"
         phone:
           type: string
+          example: "1231236767"
     update:
       type: object
       properties:
