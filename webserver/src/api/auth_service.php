@@ -51,8 +51,12 @@ function login($conn, $token, $body){
         }
     }
 
-    $username = $body->username;
-    $password = $body->password;
+    $username = $body->username ?? null;
+    $password = $body->password ?? null;
+
+    if (!$username || !$password) {
+        send_response(401, false, [], "Missing credentials");
+    }
 
 
     // Fetch user by username
