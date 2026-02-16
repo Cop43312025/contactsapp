@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: Contacts App
+  version: 1.0.1
+security:
+  - cookieAuth: []
+paths:
+  /api/users/login:
+    post:
+      summary: login
+      operationId: login
+      description: ''
+      tags:
+        - >-
+          Login
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/login'
+  /api/users/logout:
+    post:
+      summary: logout
+      operationId: logout
+      description: ''
+      tags:
+        - >-
+          Logout
+      responses:
+        '200':
+          description: ''
+  /api/users/signup:
+    post:
+      summary: signup
+      operationId: signup
+      description: ''
+      tags:
+        - >-
+          Register
+      security: []
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/signup'
+  /api/contacts/create:
+    post:
+      summary: create
+      operationId: create
+      description: ''
+      tags:
+        - >-
+          Create Contact
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create'
+  /api/contacts/delete/{id}:
+    post:
+      summary: delete
+      operationId: delete
+      description: ''
+      tags:
+        - >-
+          Delete Contact
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+  /api/contacts/update/{id}:
+    post:
+      summary: update
+      operationId: update
+      description: ''
+      tags:
+        - >-
+          Update Contact
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/update'
+  /api/contacts/view/:
+    post:
+      summary: view
+      operationId: view
+      description: ''
+      tags:
+        - >-
+          View Contact(s)
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: id
+          in: query
+          required: false
+          example: '11'
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/view'
+servers:
+  - url: http://contacts.0sake.net
+components:
+  schemas:
+    login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    signup:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    create:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: "John"
+        last_name:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          example: "John@doe.com"
+        phone:
+          type: string
+          example: "1231236767"
+    update:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+    view:
+      type: object
+      properties:
+        search_query:
+          type: string
+  requestBodies:
+    login:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/login'
+      description: ''
+      required: false
+    signup:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/signup'
+      description: ''
+      required: true
+    create:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create'
+      description: ''
+      required: true
+    update:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/update'
+      description: ''
+      required: true
+    view:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/view'
+      description: ''
+      required: false
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token

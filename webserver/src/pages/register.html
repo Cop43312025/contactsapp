@@ -1,75 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
   <meta charset="utf-8" />
   <title>Register</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 500px;
-      margin: 50px auto;
-    }
-    form {
-      border: 1px solid #ddd;
-      padding: 20px;
-      border-radius: 5px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #msg {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    a {
-      display: block;
-      margin-top: 15px;
-      text-decoration: none;
-      color: #007bff;
-    }
-  </style>
+
+  <meta name="description" content="Register page for the Contacts app">
+
+  <link rel="stylesheet" href="register.css"> <!-- so that the css file can actually change the style the page -->
+  <!-- also deleted style here sowwy -->
+  
 </head>
+
 <body>
-  <h1>Register</h1>
 
-  <form id="registerForm" action="#" method="post">
-    <label>Username</label>
-    <input id="username" type="text" required />
+   <img src="/assets/space.png" class="background_image" alt=""> <!-- space background image -->
+  <main>
 
-    <label>Password</label>
-    <input id="password" type="password" minlength="8" required />
+    <!-- stuff to make the console look like josh's box  -->
+    <div class="console-frame">
 
-    <label>Confirm Password</label>
-    <input id="confirmPassword" type="password" required />
+      <div class="header">
+        <div class="header-title">
+          <div class="status-light"></div>
+          Register
+        </div>
+      </div>
+    
+    
+      <div class="section-bar">
+        <div class="section-label">Create Account</div>
+      </div>
 
-    <button type="submit">Register</button>
-  </form>
+      <!-- stuff to make the console look like josh's box  -->
 
-  <a href="/">Back to Login</a>
+  <div>
+    <img src="/assets/moon.png" class="moon" alt=""> <!-- moon logo pic -->
 
-  <p id="msg"></p>
+    <div class="info-box-holder">
+
+      <form id="registerForm" action="#" method="post">
+        <label for="username">Username:</label>
+        <input id="username" type="text" required />
+
+        <label for="password">Password:</label>
+        <input id="password" type="password" minlength="8" required />
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input id="confirmPassword" type="password" required />
+
+        <button type="submit" class="register-button">Register</button>
+
+        <div class="or">or</div>
+
+        <a href="/" class="login-button">Back to Login</a>
+
+          <p id="msg"></p>
+      </form>
+
+    </div>
+  </div> 
+
 
   <script src="/js/common.js"></script>
   <script src="/js/register.js"></script>

@@ -1,0 +1,65 @@
+<!DOCTYPE html> <!-- added comments for context, will delete later -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" /> 
+  <title>Login</title> 
+
+  <link rel="stylesheet" href="index.css"> <!-- so that the css file can actually change the style the page -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta name="description" content="Login page for the Contacts app">
+   <!-- got rid of everything here cause it overlaps with the css style -->
+
+</head>
+
+<body>
+
+   <img src="/assets/space.png" class="background_image" alt=""> <!-- space background image -->
+  <main>
+
+    <!-- stuff to make the console look like josh's box  -->
+    <div class="console-frame">
+
+      <div class="header">
+        <div class="header-title">
+          <div class="status-light"></div>
+          Login
+        </div>
+      </div>
+    
+    
+      <div class="section-bar">
+        <div class="section-label">Login Credentials</div>
+      </div>
+
+      <!-- stuff to make the console look like josh's box  -->
+
+
+  <div>
+    <img src="/assets/moon.png" class="moon" alt=""> <!-- moon logo pic -->
+
+    <div class="info-box-holder">
+
+      <form id="loginForm" action="#" method="post"> 
+        <label for="username">Username:</label>
+        <input id="username" type="text" required /> 
+
+        <label for="password">Password:</label>
+        <input id="password" type="password" required /> 
+
+        <button type="submit" class="login-button">Log In</button>
+
+        <div class="or">or</div>
+
+        <a href="/register.html" class="register-button">Register</a>
+
+        <p id="msg"></p> 
+      </form>
+
+    </div>
+  </div> 
+  </main>
+
+  <script src="/js/common.js"></script> 
+  <script src="/js/login.js"></script> 
+</body>
+</html>

@@ -1,69 +1,543 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Contacts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Manage your crew's contact info in the crew log.">
+  <title>Crew Log</title>
+
   <style>
+    @font-face {
+      font-family: 'Press Start 2P';
+      src: url('/assets/PressStart2P-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    :root {
+      --lavender: #e9b6dd;
+      --lavender-light: #f3d4ec;
+      --lavender-dark: #d49bc7;
+      --purple-deep: rgb(38, 11, 137);
+      --purple-accent: rgb(154, 49, 177);
+      --pink-bg: #f5dced;
+      --black: #000000;
+      --white: #ffffff;
+      --text-dark: #1a1a2e;
+      --text-mid: #3a3a5a;
+      --danger-red: #cc2233;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Press Start 2P', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-dark);
+      background: #2a1a2e;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+
+    main {
+      width: 100%;
+    }
+    
+    /* ─── SPACE BACKGROUND ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url('/assets/space.png') center/cover no-repeat;
+      image-rendering: pixelated;
+      opacity: 0.25;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─── CONSOLE WRAPPER ─── */
+    .console-frame {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 940px;
+      margin: 24px auto;
+      border: 4px solid var(--black);
+      background: var(--lavender);
+      box-shadow:
+        0 6px 0 rgba(0, 0, 0, 0.4),
+        0 12px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 3px var(--lavender-dark);
+    }
+
+    /* ─── HEADER ─── */
     #header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      padding: 15px 20px;
-      background-color: #f0f0f0;
-      border-radius: 5px;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 16px 20px;
+      background: var(--purple-deep);
+      border-bottom: 4px solid var(--black);
     }
+
     #headerLeft {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    #headerRight {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
       display: flex;
-      gap: 20px;
       align-items: center;
+      gap: 10px;
     }
-    #userInfoSection {
-      text-align: right;
+
+    .status-light {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3ad84a;
+      box-shadow: 0 0 6px #3ad84a, 0 0 14px rgba(58, 216, 74, 0.4);
+      border: 2px solid var(--black);
+      animation: pulse-light 2s ease-in-out infinite;
     }
+
+    @keyframes pulse-light {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    #searchInput {
+      padding: 10px 12px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--white);
+      background: rgba(0, 0, 0, 0.4);
+      border: 3px solid var(--black);
+      outline: none;
+      width: 45%;
+      transition: border-color 0.2s;
+    }
+
+    #searchInput::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    #searchInput:focus {
+      border-color: var(--lavender);
+      box-shadow: 0 0 8px rgba(233, 182, 221, 0.3);
+    }
+
+    #headerRight { display: flex; gap: 14px; align-items: center; }
+    #userInfoSection { text-align: right; }
+
     #userInfo {
-      font-weight: bold;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      color: var(--lavender-light);
     }
+
     #logoutLink {
-      color: #007bff;
+      display: inline-block;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      color: var(--white);
       text-decoration: none;
-      font-size: 14px;
       cursor: pointer;
+      padding: 8px 14px;
+      border: 3px solid var(--black);
+      background: var(--danger-red);
+      transition: background 0.15s;
     }
+
     #logoutLink:hover {
-      text-decoration: underline;
+      background: #ee3344;
     }
-    body {
-      font-family: Arial, sans-serif;
+
+    /* ─── SECTION TAB ─── */
+    .section-bar {
+      padding: 16px 20px 0;
     }
-    button {
-      padding: 8px 15px;
+
+    .section-label {
+      display: inline-block;
+      padding: 8px 16px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--purple-accent);
+      border: 3px solid var(--black);
+      border-bottom: none;
+    }
+
+    /* ─── CONTACTS GRID ─── */
+    #contactsContainer {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin: 0 20px 20px;
+      padding: 18px;
+      background: rgba(0, 0, 0, 0.12);
+      border: 3px solid var(--black);
+    }
+
+    /* ─── CONTACT CARDS ─── */
+    .contact-card {
+      position: relative;
+      background: var(--lavender-light);
+      border: 3px solid var(--black);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-card::before {
+      content: '';
+      display: block;
+      height: 4px;
+      background: var(--purple-accent);
+    }
+
+    .contact-name {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      padding: 14px 14px 10px;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contact-name::before {
+      content: '>';
+      color: var(--purple-deep);
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .contact-field {
+      padding: 0 14px;
+      margin: 8px 0 0;
+      font-size: 0.6rem;
+      color: var(--text-mid);
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .contact-field a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      transition: color 0.2s;
+      padding: 6px 4px;
+      display: inline-block;
+    }
+
+    .contact-field a:hover {
+      color: var(--purple-accent);
+    }
+
+    .field-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.45rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--purple-deep);
+      min-width: 55px;
+    }
+
+    .contact-date {
+      padding: 0 14px;
+      margin: 8px 0 14px;
+      font-size: 0.5rem;
+      color: var(--text-mid);
+      flex-grow: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .contact-actions {
+      display: flex;
+      border-top: 2px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-actions button {
+      flex: 1;
+      padding: 10px 12px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: none;
       cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-edit {
+      color: var(--white);
+      background: var(--purple-deep);
+      border-right: 2px solid var(--black) !important;
+    }
+    .btn-edit:hover {
+      background: #3318a0;
+    }
+
+    .btn-delete {
+      color: var(--white);
+      background: var(--danger-red);
+    }
+    .btn-delete:hover {
+      background: #ee3344;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      grid-column: 1 / -1;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      color: var(--text-mid);
+    }
+
+    /* ─── FAB BUTTON ─── */
+    #addContactBtn {
+      position: fixed;
+      bottom: 64px;
+      right: 28px;
+      padding: 14px 20px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 1000;
+      color: var(--white);
+      border: 3px solid var(--black);
+      cursor: pointer;
+      background: var(--purple-accent);
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    #addContactBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    #addContactBtn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    /* ─── STATUS BAR ─── */
+    .status-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px;
+      background: var(--purple-deep);
+      border-top: 4px solid var(--black);
+    }
+
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3ad84a;
+      box-shadow: 0 0 5px #3ad84a;
+      border: 2px solid var(--black);
+      animation: pulse-light 2s ease-in-out infinite;
+    }
+
+    .status-text {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.45rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--lavender-light);
+    }
+
+    /* ─── GENERAL INPUTS ─── */
+    input, textarea, select {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--text-dark);
+      background: var(--white);
+      border: 3px solid var(--black);
+      padding: 8px 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--purple-accent);
+    }
+    input::placeholder, textarea::placeholder {
+      color: #999;
+    }
+
+    a { color: var(--purple-accent); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--purple-deep); }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #2a1a2e; }
+    ::-webkit-scrollbar-thumb {
+      background: var(--lavender);
+      border: 2px solid var(--black);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--lavender-light); }
+
+    /* Firefox */
+    html {
+    scrollbar-color: var(--lavender) #2a1a2e;
+    scrollbar-width: thin;
+    } 
+
+    ::selection {
+      background: rgba(154, 49, 177, 0.3);
+      color: var(--text-dark);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .console-frame {
+        margin: 12px 10px;
+      }
+
+      #header {
+        padding: 12px 14px;
+      }
+
+      #headerLeft {
+        font-size: 0.65rem;
+      }
+
+      #searchInput {
+        width: 100%;
+        order: 3;
+      }
+
+      #contactsContainer {
+        margin: 0 12px 12px;
+        padding: 12px;
+      }
+
+      .contact-name {
+        font-size: 0.65rem;
+      }
+
+      #addContactBtn {
+        bottom: 70px;
+        right: 14px;
+        padding: 12px 14px;
+        font-size: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #header {
+        padding: 10px 10px;
+      }
+
+      #headerLeft {
+        font-size: 0.55rem;
+      }
+
+      #userInfo {
+        font-size: 0.4rem;
+      }
+
+      #contactsContainer {
+        padding: 8px;
+        gap: 10px;
+        margin: 0 8px 8px;
+      }
+
+      .contact-field {
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .contact-actions button {
+        padding: 8px 6px;
+        font-size: 0.4rem;
+      }
+
+      .status-text {
+        font-size: 0.35rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="header">
-    <div id="headerLeft">Contacts App</div>
-    <input type="text" id="searchInput" placeholder="Search contacts..." style="padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; width: 70%;" />
-    <div id="headerRight">
-      <div id="userInfoSection">
-        <span id="userInfo">Loading...</span>
-        <a id="logoutLink">Log Out</a>
+  <main>
+    <div class="console-frame">
+
+      <div id="header">
+        <div id="headerLeft">
+          <div class="status-light"></div>
+          Crew Log
+        </div>
+        <input type="text" id="searchInput" placeholder=">> SEARCH CREW  LOG..." />
+        <div id="headerRight">
+          <div id="userInfoSection">
+            <span id="userInfo">Loading...</span>
+            <a id="logoutLink">Eject</a>
+          </div>
+        </div>
       </div>
+
+      <div class="section-bar">
+        <div class="section-label">Crew Manifest</div>
+      </div>
+
+      <div id="contactsContainer">
+        <div class="empty-state">[ LOADING CREW DATA... ]</div>
+      </div>
+
     </div>
-  </div>
+  </main>
+  
 
-  <button id="addContactBtn" style="position: fixed; bottom: 30px; right: 30px; padding: 12px 16px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-weight: bold;">+ Add Contact</button>
+  <button id="addContactBtn">+ Add Contact</button>
 
-  <div id="contactsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); max-width: 800px; gap: 20px; margin: 20px auto; padding: 0 20px;">
-    <div style="text-align: center; padding: 20px;">Loading contacts...</div>
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-left">
+      <div class="status-dot"></div>
+      <span class="status-text">Systems Nominal</span>
+    </div>
+    <div class="status-text">Deck 7 · Bay 03</div>
   </div>
 
   <script src="/js/common.js"></script>

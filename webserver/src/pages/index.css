@@ -1,0 +1,217 @@
+/* leaving some comments in case anyone wants to mess around, gonna remove prob */
+/* reset. just to ensure everything looks the same on every browser */
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('/assets/PressStart2P-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+input{
+    font-family: 'Press Start 2P';
+    src: url('/assets/PressStart2P-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+    /*Josh css style*/
+    :root {
+      --lavender: #e9b6dd;
+      --lavender-light: #f3d4ec;
+      --lavender-dark: #d49bc7;
+      --purple-deep: rgb(38, 11, 137);
+      --purple-accent: rgb(154, 49, 177);
+      --black: #000000;
+      --white: #ffffff;
+      --text-dark: #1a1a2e;
+      --text-mid: #3a3a5a;
+      --danger-red: #cc2233;
+    }
+
+    :focus {
+      border-color: var(--purple-accent);
+      box-shadow: 0 0 8px rgba(154, 49, 177, 0.2);
+      outline: none;
+    }
+    
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+/* background image */
+.background_image{
+    position:fixed;
+    inset: 0;
+    width:100%;
+    height:100%;
+    object-fit:cover; /* this just ensures the image takes up the entire backgrounf */
+    image-rendering:pixelated; /* this keeps the resolution high, and doesn't make it look like a horrble low-res mess */
+    opacity: 0.25;
+}
+
+/* body */
+body{
+    min-height:100vh; /* had to put a min view height of 100 cause it fits perfectly on screen, otherwise it goes up/isn't centered */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:  'Press Start 2P';
+    background: #2a1a2e;
+}
+
+
+    main {
+      width: 100%;
+    }
+        /* ─── CONSOLE WRAPPER ─── */
+    .console-frame {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      margin: 30px auto;
+      border: 4px solid var(--black);
+      background: var(--lavender);
+      box-shadow:
+        0 6px 0 rgba(0, 0, 0, 0.4),
+        0 12px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 3px var(--lavender-dark);
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 16px 20px;
+      background: var(--purple-deep);
+      border-bottom: 4px solid var(--black);
+    }
+
+    .header-title {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-light {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #f08030;
+      box-shadow: 0 0 6px #f08030, 0 0 14px rgba(240, 128, 48, 0.4);
+      border: 2px solid var(--black);
+      animation: pulse-light 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-light {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ─── SECTION TAB ─── */
+    .section-bar {
+      padding: 16px 20px 0;
+    }
+
+    .section-label {
+      display: inline-block;
+      padding: 8px 16px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--purple-accent);
+      border: 3px solid var(--black);
+      border-bottom: none;
+    }
+        /*Josh css style*/
+
+/* moon, small bug with the logo will fix after push */
+.moon{
+    position:absolute;
+    top:-140px;
+    left:50%;
+    transform:translateX(-50%);
+    width:240px;
+    image-rendering:pixelated;
+    z-index: 1; /* so the moon doesnt go behind the box w/ da stuff */
+}
+
+/* box that has the inputs and buttons */
+.info-box-holder{
+    position:relative;
+    margin: 0 20px 20px;
+    padding: 20px;
+    background: var(--lavender-light);
+    border: 3px solid var(--black);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+
+}
+
+
+/* form setup */
+form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+/* design of input box(es) */
+input{
+    height:45px;
+    border:3px solid rgb(0, 0, 0);
+    padding:10px;
+}
+
+/* buttons :D */
+.login-button{
+    margin-top:10px;
+    background:rgb(38, 11, 137); 
+    color:white;
+    border:3px solid black;
+    padding:10px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family: 'Press Start 2P';
+    font-size: 16px;
+}
+
+.register-button{
+    text-align:center;
+    margin-top:10px;
+    background:rgb(154, 49, 177); /*rgb(49, 177, 72);*/
+    color:white;
+    border:3px solid black;
+    padding:10px;
+    text-decoration:none;
+    font-size: 16px;
+    font-weight:bold;
+}
+
+.or{
+    text-align:center;
+    font-weight:bold;
+}
+
+
+    /* just here incase i cant modify my code with josh's code 
+    position:relative; 
+    width:650px;
+    top: 30px;
+    
+    background:#e9b6dd; 
+    border:4px solid black;
+    
+    padding:30px; 
+    box-shadow:0 6px 0 rgba(0, 0, 0, 0.4); 
+    z-index: 0; */

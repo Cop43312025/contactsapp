@@ -1,6 +1,16 @@
 <?php
 
-function read_contact($conn, $owner_id, $body){
+function read_contact($conn, $owner_id, $body, $query_params){
+
+    $contact_id = $query_params->id ?? $body->id ?? null;
+    if ($contact_id !== null && $contact_id !== "") {
+        $contact_id = (int) $contact_id;
+        $stmt = $conn->prepare("SELECT * FROM contacts WHERE owner_id = ? AND id = ?");
+        $stmt->bind_param("ii", $owner_id, $contact_id);
+        $data = execute_stmt($stmt);
+        $stmt->close();
+        send_response(200, true, $data, null);
+    }
 
     $search_query = preg_replace('/(?<=\d)-/', '', $body->search_query ?? "");
     $query_exprs = array_filter(explode(' ',$search_query));

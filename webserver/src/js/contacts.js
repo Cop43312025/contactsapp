@@ -15,12 +15,12 @@ async function loadContacts(searchQuery = '') {
       displayContacts(data.data);
     } else {
       const contactsContainer = document.getElementById("contactsContainer");
-      contactsContainer.innerHTML = "<div style=\"text-align: center; padding: 20px; grid-column: 1 / -1;\">No contacts found</div>";
+      contactsContainer.innerHTML = "<div class='empty-state'>No contacts found</div>";
     }
   } catch (err) {
     console.error("Error loading contacts:", err);
     const contactsContainer = document.getElementById("contactsContainer");
-    contactsContainer.innerHTML = "<div style=\"text-align: center; padding: 20px; grid-column: 1 / -1;\">Error loading contacts</div>";
+    contactsContainer.innerHTML = "<div class='empty-state'>Error loading contacts</div>";
   }
 }
 
@@ -29,7 +29,7 @@ function displayContacts(contacts) {
   const contactsContainer = document.getElementById("contactsContainer");
   
   if (contacts.length === 0) {
-    contactsContainer.innerHTML = "<div style=\"text-align: center; padding: 20px; grid-column: 1 / -1;\">No contacts found</div>";
+    contactsContainer.innerHTML = "<div class='empty-state'>No contacts found</div>";
     return;
   }
 
@@ -39,22 +39,22 @@ function displayContacts(contacts) {
     
     let details = '';
     if (contact.email) {
-      details += `<p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${contact.email}" style="color: #007bff; text-decoration: none;">${contact.email}</a></p>`;
+      details += `<p class="contact-field"><span class="field-label">Email</span> <a href="mailto:${contact.email}">${contact.email}</a></p>`;
     }
     if (contact.phone) {
-      // Remove all non-numeric characters for tel link
-      const phoneDigits = contact.phone.replace(/\D/g, '');
-      details += `<p style="margin: 5px 0;"><strong>Phone:</strong> <a href="tel:+${phoneDigits}" style="color: #007bff; text-decoration: none;">${contact.phone}</a></p>`;
+      const d = contact.phone.replace(/\D/g, '');
+      const formatted = `(${d.slice(0,3)})-${d.slice(3,6)}-${d.slice(6)}`;
+      details += `<p class="contact-field"><span class="field-label">Phone</span> <a href="tel:+1${d}">${formatted}</a></p>`;
     }
     
     return `
-    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column;">
-      <h3 style="margin: 0 0 10px 0;">${name}</h3>
+    <div class="contact-card">
+      <h3 class="contact-name">${name}</h3>
       ${details}
-      <p style="margin: 5px 0 15px 0; font-size: 12px; color: #666; flex-grow: 1;"><strong>Created:</strong> ${new Date(contact.creation_date.replace(' ', 'T') + 'Z').toLocaleString() || '-'}</p>
-      <div style="display: flex; gap: 10px;">
-        <button onclick="handleContactAction('edit', ${contact.id})" style="flex: 1; padding: 8px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Edit</button>
-        <button onclick="handleContactAction('delete', ${contact.id})" style="flex: 1; padding: 8px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
+      <p class="contact-date"><span class="field-label">Created</span> ${new Date(contact.creation_date.replace(' ', 'T') + 'Z').toLocaleString() || '-'}</p>
+      <div class="contact-actions">
+        <button class="btn-edit" onclick="handleContactAction('edit', ${contact.id})">Edit</button>
+        <button class="btn-delete" onclick="handleContactAction('delete', ${contact.id})">Delete</button>
       </div>
     </div>
   `;
