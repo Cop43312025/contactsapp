@@ -2,6 +2,9 @@ DirectoryIndex pages/index.html index.php
 
 RewriteEngine On 
 
+# Route favicon requests to assets
+RewriteRule ^favicon\.ico$ assets/favicon.ico [L]
+
 # If the file or directory exists in root, serve it 
 RewriteCond %{REQUEST_FILENAME} -f [OR] 
 RewriteCond %{REQUEST_FILENAME} -d 
